@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <string>
 #include <fstream>
+#include <random>
 #include <iostream>
 
 constexpr int MEMORY_SIZE = 4096;
@@ -469,10 +470,14 @@ void Chip8::OpcodeB(uint16_t opcode)
 // 0xCXNN: Set Vx to (random byte AND NN).
 void Chip8::OpcodeC(uint16_t opcode)
 {
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(0, 256);
+
     uint8_t x = (opcode & 0x0F00) >> 8;
     uint8_t nn = opcode & 0x00FF;
-    // For example purposes, using rand(). Consider using a better RNG.
-    m_registers[x] = (rand() % 256) & nn;
+    // Using the Mersenne tittie twister algorithm to generate random numbers.
+    m_registers[x] = (dis(gen)) & nn;
     m_pc += 2;
 }
 
