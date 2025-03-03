@@ -472,7 +472,7 @@ void Chip8::OpcodeC(uint16_t opcode)
 {
     std::random_device rd;
     std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(0, 256);
+    std::uniform_int_distribution dis(0, 256);
 
     uint8_t x = (opcode & 0x0F00) >> 8;
     uint8_t nn = opcode & 0x00FF;
